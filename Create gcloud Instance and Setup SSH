@@ -1,0 +1,35 @@
+#Minimal Instance Config
+
+gcloud compute instances create raddit-instance-2 \
+    --image-family ubuntu-2004-lts \
+    --image-project ubuntu-os-cloud \
+    --boot-disk-size 10GB \
+    --machine-type n1-standard-1
+    
+#Create SSH Key-Pair
+
+Generate an SSH key pair for future connections to the VM instances:
+
+ssh-keygen -t rsa -f ~/.ssh/username -C username -P ""
+
+#Create and SSH Public Key for your project:
+
+gcloud compute project-info add-metadata \
+    --metadata ssh-keys="username:$(cat ~/.ssh/username.pub)"
+   
+#Add the SSH private key to the ssh-agent:
+
+ssh-add ~/.ssh/username
+
+#Verify that the key was added to the ssh-agent
+
+ssh-add -l
+
+#Connect to the started VM
+
+INSTANCE_IP=$(gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe raddit-instance-2) \
+ssh raddit-user@${INSTANCE_IP}
+
+#Delete the VM
+
+gcloud compute instances delete name-of-VM
