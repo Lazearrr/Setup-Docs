@@ -27,8 +27,8 @@ ssh-add -l
 
 #Connect to the started VM
 
-INSTANCE_IP=$(gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe raddit-instance-2) \
-ssh raddit-user@${INSTANCE_IP}
+INSTANCE_IP=$(gcloud --format="value(networkInterfaces[0].accessConfigs[0].natIP)" compute instances describe name-of-VM) \
+ssh username@${INSTANCE_IP}
 
 #Delete the VM
 
